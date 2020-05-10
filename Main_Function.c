@@ -1,188 +1,146 @@
 #include <stdio.h>
-#include <stdlib.h>
-
-
-void BubbleSortAscend(int* pArray, int ASize)
-{
-	int i, j, temp;
-	for (i = ASize - 2; i >= 0; --i)
-	{
-		for (j = 0; j <= i; ++j) // j runs over 0 up to i from the left
-		{
-			if (*(pArray + j) > * (pArray + j + 1))
-			{
-				// swap the values of num[j] & num[j+1]
-				temp = *(pArray + j);
-				*( pArray + j ) = *(pArray + j +1 );
-				*(pArray + j + 1 ) = temp;
-			}
-		}
-	}
-}
-void BubbleSortDescend(int* pArray, int ASize)
-{
-	int i, j, temp;
-	for (i = 0; i < ASize - 1; ++i)
-	{
-		for (j = i; j >= 0; --j) // j runs over 0 to i from the right
-		{
-			if (*(pArray + j) < * (pArray + j + 1))
-			{
-				// swap the values of num[j] & num[j+1]
-				temp = *(pArray + j);
-				*(pArray + j) = *(pArray + j + 1);
-				*(pArray + j + 1) = temp;
-			}
-		}
-	}
-}
-
-void ReverseNumbers(int* pArray, int ASize)
-{
-	int* pStart = pArray;
-	int* pEnd = pStart + ASize - 1;
-	int temp;
-	
-	while (pStart <= pEnd)
-	{
-		temp = *pStart;
-		*pStart = *pEnd;
-		*pEnd = temp;
-		++pStart;
-		--pEnd;
-	}
-}
+#include <math.h>
 
 int main(void)
 {
-	/* bubble-sorting */
-
-	int N;
-	int i;
+	/* Exercise 4.1: Give 3 integers and determine the mininum value among them. */
+	
 	int num[100];
-
-	printf("How many integers will be sorted? (at max 100)");
+	int Max, min;
+	int N;
+	int k;
+	printf("Key in the number of inputs N (at most 100) = ");
 	scanf_s("%d", &N);
 
-	for (i = 0; i < N; ++i)
+	printf("Now initialise the integers term by term.\n");
+	for (k = 0; k < N; ++k)
 	{
-		printf("Thie %d-th intger: ", i + 1);
-		scanf_s("%d", &num[i]);
+		printf("num[%d] = ", k);
+		scanf_s("%d", &num[k]);
 	}
 
-	printf("Do you prefer to the ascending order or the descending order? (Enter 'a' or 'd') ");
-	char order;
-	scanf_s(" %c", &order);  // char input shall be replaced with string input later!
+	Max_min(&num[0], N, &Max, &min);
+	// to be revised later
 
-	if (order == 'a')
+	//min = Find_min(num, );
+
+	
+	printf("The Max and the min are respectively %d and %d. \n", Max, min);
+
+
+
+	/* Exercise 4.2: Input the coordinates of a batch of points in the 2D plane. And identify the point which is farhtest from the origin. */
+
+	printf("Key in the number of points N (less or equal than 100) = ");
+	scanf_s("%d", &N);
+
+
+	double Pts[100][2];
+	printf("Initialise each cooridinate of these points.\n");
+	for (k = 0; k < N; ++k)
 	{
-		BubbleSortAscend(num, N);
+		printf("Point %d: x-coordinate = ", k );
+		scanf_s("%f", &Pts[k][0]);
+		printf("Point %d: y-coordinate = ", k);
+		scanf_s("%f", &Pts[k][1]);
 	}
-	else if (order == 'd')
+
+	
+	// Farthest_Coordinate(Pts, N);
+
+	if (N == 3)
 	{
-		BubbleSortDescend(num, N);
+		double dist[3];
+		double tempX, tempY;
+		
+
+		for (k = 0; k < N; ++k)
+		{
+			tempX = Pts[k][0];
+			tempY = Pts[k][1];
+			dist[k] = sqrt(tempX * tempX + tempY * tempY);
+			printf("dist[%d] = %f\n", k, dist[k]);
+		}
+
+		double distMax, distMin;
+		int idxMin, idxMax;
+
+		for (k = 0, idxMin = 0, min = dist[0]; k < (N - 1); ++k)  // to determine min
+		{
+			min = ( min <= dist[k + 1]) ? min : dist[k + 1];
+			idxMin = ( min <= dist[k + 1] ) ? idxMin : k + 1;
+		}
+
+		for (k = 0, idxMax = 0, Max = dist[0]; k < (N - 1); ++k)  // to determine Max
+		{
+			Max = ( Max >= dist[k + 1]) ? Max : dist[k + 1];
+			idxMax = ( Max >= dist[k + 1] ) ? idxMax : k + 1;
+		}
+
+		printf("min of distance = %lf \n", distMin);
+		printf("Max of distance = %lf \n", distMax);
+	}
+
+	/* Exercise 4.7: Continuous sum from an integer to another */
+
+	int N1, N2;
+
+	printf("Key in the values of two integers N1 and N2 (N1 < N2)\n");
+	scanf_s("%d %d", &N1, &N2);
+
+	int sum = 0;
+	int temp = N1;
+	while (temp <= N2)
+	{
+		sum += temp;
+		++temp;
+	}
+
+	printf("The temp stays at the number of %d. \n", temp);
+	printf("The sum turns out %d. \n", sum);
+
+	/* Exercise 4.9:  Solve the numbers of hens, rabbits and crabs */
+	int TotalNum;
+	int tails;
+	int feet;
+
+	printf("Give the total number of these 3 kinds of species: ");
+	scanf_s("%d", &TotalNum);
+	printf("Give the number of their feet: ");
+	scanf_s("%d", &feet);
+	printf("Give the number of their tails: ");
+	scanf_s("%d", &tails);
+
+	int n1; // number of hens
+	int n2; // number of rabbits
+	int n3; // number of crabs
+
+	// to resume the program from here!!
+
+	/* 
+	 
+	 n1 + n2 + n3		 = TotalNum;
+	 n1 + n2			 = tails;
+	 2*n1 + 4*n2 + 8*n3 = feet;
+
+	 */
+
+	n3 = TotalNum - tails;
+
+	if ((feet - 2 * tails - 8 * n3) % 2 == 0)
+	{
+		n2 = (feet - 2 * tails - 8 * n3) / 2;
+		n1 = tails - n2;
+		if (n1 >= 0 && n2 >= 0 && n3 >= 0)
+			printf("Number of hens: %d \n Number of rabbits: %d \n Number of crabs: %d \n ", n1, n2, n3);
+		else
+			printf("This problem is unsolvale!\n");	
 	}
 	else
 	{
-		printf("Invalid command detected!");
+		printf("This problem is unsolvable!\n");
 	}
 
-	for (i = 0; i < N; ++i)
-	{
-		printf("%d\n", num[i]);
-	}
-
-
-	/* Ex 6.1: Reverse numbers */
-	printf("Enter the length of the array of integers. (do not exceed 100)");
-	scanf_s("%d", &N);
-
-	int arr[100];
-	
-	printf("Before reversion:\n");
-	for (i = 0; i < N; ++i)
-	{
-		printf("arr[%d] = ", i);
-		scanf_s("%d", &arr[i]);
-	}
-	ReverseNumbers(arr, N);
-
-	printf("After reversion:\n");
-	for (i = 0; i < N; ++i)
-	{
-		printf("arr[%d] = %d \n", i, arr[i]);
-	}
-
-	/* Ex 6.3: Numbers divided into 2 groups in terms of odd and even numbers */
-
-	printf("How many integers are you gonna enter? ");
-	scanf_s("%d", &N);
-
-	for (i = 0; i < N; ++i)
-	{
-		printf("The %d-th number is set to: ", i + 1);
-		scanf_s("%d", &arr[i]);
-	}
-
-	for (i = 0; i < N; ++i)
-	{
-		if (arr[i] % 2 != 0)
-		{
-			printf("%d ", arr[i]);
-		}
-	}
-	printf("\n");
-
-	for (i = 0; i < N; ++i)
-	{
-		if (arr[i] % 2 == 0)
-		{
-			printf("%d ", arr[i]);
-		}
-	}
-	printf("\n");
-
-	/* Ex 6.4: averaged credits over students and courses */
-	int s;
-	int c;
-	printf("How many attendants? And how many courses do their take? (both less or equal to 100)");
-	scanf_s("%d %d", &s, &c);
-	
-	int credits[100][100];
-	int j;
-
-	for (i = 0; i < s; ++i)
-	{
-		printf("The %d-th student got his credits as follows: \n", i + 1);
-		for (j = 0; j < c; ++j)
-		{
-			scanf_s("%d", &credits[i][j]);
-		}
-	}
-
-	float avg; 
-
-	// average over courses
-	for (i = 0; i < s; ++i)
-	{
-		for (j = 0, avg = 0; j < c; ++j)
-		{
-			avg += credits[i][j];
-		}
-		avg /= c; 
-		printf("The %d-th student got his averaged score: %2f\n", i + 1, avg);
-	}
-
-	// average over students
-	for (j = 0; j < c; ++j)
-	{
-		for (i = 0, avg = 0; i < s; ++i)
-		{
-			avg += credits[i][j];
-		}
-		avg /= s;
-		printf("The average score in the %d-th course: %2f\n", j + 1, avg);
-	}
 
 	return 0;
 }
