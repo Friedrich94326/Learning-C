@@ -1,278 +1,176 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+// #include "polynomial.h"
 
-void ReverseArray(int* pArray, int LengthA)
-{
-	if (NULL == pArray)
-		return;
+#define N 33
 
-	int* pStart = pArray; // pStart points to the address of the first integer in pArray
-	int* pEnd = pStart + LengthA - 1; // pEnd points to the address of the last entry in the array
-
-	while (pEnd > pStart)
-	{
-		// swap the addresses by the 2 pointers
-		int temp = *pStart;
-		*pStart = *pEnd;
-		*pEnd = temp;
-
-		++pStart;
-		--pEnd;
-	}
-	return;
-}
+double Euclid_Distance(double r1, double theta1, double r2, double theta2);
+double polynomial(double x, double coef[], int n);
+int CoprimePairs(int number[], int NumberSize);
+int gcd(int Num1, int Num2);
 
 
 int main(void)
 {
-	/* Ex 5.1: compute n^i */
+
+	int Num1, Num2;
+	int ans;
+
+	do
+	{
+		printf("Enter two integers: ");
+		scanf_s("%d %d", &Num1, &Num2);
+
+
+		printf("The gcd of them is %d.\n\n", gcd(Num1, Num2));
+		printf("Would you like to carry on this procedure? (1 for aye; 0 for nay)");
+		scanf_s("%d ", &ans);
+
+	} while ( ans == 1 );
+	
+
+
+	/* Ex 8.1: Evaluate the distance between two dots given in the polar coordinate. */
+
+	double r1, r2, theta1, theta2;
+
+	printf("Here goes Exercise 8.1\n");
+	printf("r1 = ");
+	scanf_s("%lf", &r1);
+	printf("theta1 = ");
+	scanf_s("%lf", &theta1);
+	printf("r2 = ");
+	scanf_s("%lf", &r2);
+	printf("theta2 = ");
+	scanf_s("%lf", &theta2);
+
+	double dist;
+	dist = Euclid_Distance(r1, theta1, r2, theta2);
+
+	printf("The distance between these 2 dots is %lf.\n\n", dist);
+
+	/* Ex 8.2: Evaluate the values of a polynomial. */
+
+	double coefficient[N];
+	double x, y;
+	int i, deg, Num;
+
+	printf("deg of polynomial P = ");
+	scanf_s("%d", &deg);
+
+	for (i = 0; i <= deg; ++i)
+	{
+		printf("coef[%d] = ", i);
+		scanf_s("%lf", &coefficient[i]);
+	}
+
+	printf("How many independent variables x's do you like to give? ");
+	scanf_s("%d", &Num);
+
+	for (i = 0; i < Num; ++i)
+	{
+		printf("the %d-th x: ", i);
+		scanf_s("%lf", &x);
+		y = polynomial(x, coefficient, deg);
+		printf("the corresponding function value is %lf. \n", y);
+	}
+	printf("\n\n");
+
+	/* Ex 8.3: Given n integers, determine how many coprime pairs of them */
+
+	printf("Here goes Exercise 8.3\n");
+
 	int n;
-	int i;
-	int x = 1;
-
-	printf("Key in the value of base n: ");
-	scanf_s("%d", &n);
-	printf("Key in the value of power i ");
-	scanf_s("%d", &i);
-
-	if ((i == 0) && (n == 0))
-	{
-		printf("This ain't work with the undefined expression 0^0!\n");
-		return 1;
-	}
-	else if ((i == 0) && (n != 0))
-	{
-		x = 1;
-	}
-	else
-	{
-		int count;
-		for (count = 0; count < i; ++count)
-		{
-			x *= n;
-		}
-	}
-	printf("x = %d \n", x);
-
-
-	/* Ex 5.5: Give serial commands to a moving vehicle.  And print out the final position of that car. */
-	int N;
-	int posX;
-	int posY;
-	int cmd[200]; // array of commands
-	char dir = 'n'; // direction indicator
-	int v; // constant speed
-	int dt;
-
-	printf("Give the original position of the vehicle. \n posX0 = ");
-	//printf("%d", posX);
-	scanf_s("%d", &posX);
-	printf(" posY0 = ");
-	//printf("%d\n", posY);
-	scanf_s("%d", &posY);
-
-	printf("In which direction is the car currently heading? (n/e/s/w) ");
-	scanf_s(" %c", &dir);
-	printf("Also, the car shall move at a constant speed.  How fast do you wish it will move? ");
-	scanf_s("%d", &v);
-
-	printf("Give the number of commands N (N <= 100): ");
-	scanf_s("%d", &N);
-	//printf("%d \n", N);
-
-
-	for (i = 0; i < N; ++i)
-	{
-		switch ((i % 2) == 0)
-		{
-		case 1: // even i
-			printf("The %d-th command to indicate time: ", i);
-			scanf_s("%d", &cmd[i]);
-			break;
-		default: // odd i
-			printf("The %d-th command to change direction: ", i);
-			scanf_s("%d", &cmd[i]);
-		}
-		printf("cmd[%d] = %d \n", i, cmd[i]);
-
-	}
-
-	/*
-	cmd[0] = 5;
-	cmd[1] = 1;
-	cmd[2] = 10;
-	cmd[3] = 2;
-	cmd[4] = 20;
-	cmd[5] = 3;  // for debugging
-	*/
-
-	for (i = 0; i < N; ++i)
-	{
-		if ((i % 2 != 0) && (cmd[i] != 3)) // position changes
-		{
-			if (i < 2)
-			{
-				dt = cmd[0];
-			}
-			else
-			{
-				dt = cmd[i - 1] - cmd[i - 3];
-			}
-			switch (dir)
-			{
-			case 'n':
-				posX = posX;
-				posY += dt * v;
-				if (cmd[i] == 1)
-				{
-					dir = 'w'; // turn left to head the west 
-				}
-				else
-				{
-					dir = 'e'; // turn right to head the east
-				}
-				break;
-			case 'e':
-				posX += dt * v;
-				posY = posY;
-				if (cmd[i] == 1)
-				{
-					dir = 'n'; // turn left to head the north 
-				}
-				else
-				{
-					dir = 's'; // turn right to head the south
-				}
-				break;
-			case 's':
-				posX = posX;
-				posY -= dt * v;
-				if (cmd[i] == 1)
-				{
-					dir = 'w'; // turn left to head the east 
-				}
-				else
-				{
-					dir = 'e'; // turn right to head the west
-				}
-				break;
-			case 'w':
-				posX -= dt * v;
-				posY = posY;
-				if (cmd[i] == 1)
-				{
-					dir = 's'; // turn left to head the north 
-				}
-				else
-				{
-					dir = 'n'; // turn right to head the south
-				}
-				break;
-			default:
-				printf("Invalid direction!\n");
-			}
-			printf("i = %d: cmd[%d] = %d \n", i, i, cmd[i]);
-			printf("And the car moves to (%d, %d) and head to %c. \n", posX, posY, dir);
-		}
-		else if ((i % 2 != 0) && (cmd[i] == 3))
-		{
-			switch (dir)
-			{
-			case 'n':
-				posX = posX;
-				posY += dt * v;
-				break;
-			case 'e':
-				posX += dt * v;
-				posY = posY;
-				break;
-			case 's':
-				posX = posX;
-				posY -= dt * v;
-				break;
-			case 'w':
-				posX -= dt * v;
-				posY = posY;
-				break;
-			default:
-				printf("Invalid direction!\n");
-			}
-			printf("i = %d: cmd[%d] = %d \n", i, i, cmd[i]);
-			printf("And the car moves to (%d, %d) and head to %c. \n", posX, posY, dir);
-			break;
-		}
-		else
-		{
-			printf("i = %d: cmd[%d] = %d, dir = %c \n", i, i, cmd[i], dir);
-			continue;
-		}
-	}
-	printf("The stupid vehicle was pulled over at the location of (%d, %d).\n", posX, posY);
-
-
-	/* Ex 5.10 */
-	// ¥Î¦P¾lªº·§©À!!
-	printf("Enter a natural number N: ");
-	scanf_s("%d", &N);
-
-	int dig[100]; // digits of N
-	int count = 0;
-	do
-	{
-		dig[count] = (N % 10);
-		N /= 10;
-		++count;
-	} while (N > 0);   // extraction of all the digits 
-	printf("count = %d \n", count);
-
-	/*
-	for (i = 0; i < count; ++i)
-	{
-		printf("dig[%d] = %d \n", i, dig[i]);
-	}
-	*/
-
-	ReverseArray(&dig[0], count);
-
-	for (i = 0; i < count; ++i)
-	{
-		printf("dig[%d] = %d \n", i, dig[i]);
-	}
-
-
-	printf("How many times do you implement this reversion of digits? ");
+	int Integer[100];
+	printf("How many integers do we consider? (at most 100)");
 	scanf_s("%d", &n);
 
-	int k = 0;
-
-	do
+	for (i = 0; i < n; ++i)
 	{
-		printf("The %d-th reversion:  ", k);
-		for (i = 0; i < count; ++i)
-		{
-			printf("%d", dig[i]);
-		}
-		printf("\n");
+		printf("The %d-th integer: ", i);
+		scanf_s("%d", &Integer[i]);
+	}
 
-		if (dig[count - 1] == 0)
-		{
-			--count;
-			continue;
-		}
-		int temp = dig[count - 1];
-		for (i = count - 1; i > 0; --i)
-		{
-			dig[i] = dig[i - 1];
-		}
+	printf("There are %d pairs of comprime intgers in this give array!\n\n", CoprimePairs(Integer, n));
 
-		dig[i] = temp;
+	/* Ex 8.4: b/a + d/c */
 
-		++k;
-	} while (k <= n);
+
+	printf("Here goes Exercise 8.4\n");
+	int a, b, c, d;
+	printf("Now we key four integers a, b, c and d in a row to form two frational numbers b/a and d/c: ");
+	scanf_s("%d %d %d %d", &a, &b, &c, &d);
+
+	int Denominator, Numerator;
+	Denominator = b * c + a * d;
+	Numerator = a * c;
+
+	int GCD;
+	GCD = gcd(Denominator, Numerator);
+	Denominator /= GCD;
+	Numerator /= GCD;
+
+	printf("The numerator and the denominator turn out to be %d and %d respectively.\n\n", Numerator, Denominator);
+
 
 
 
 	return 0;
 }
 
+double Euclid_Distance(double r1, double theta1, double r2, double theta2)
+{
+
+	double dist;
+	dist = sqrt( pow(r1*cos(theta1) - r2*cos(theta2), 2 ) + pow(r1 * sin(theta1) - r2 * sin(theta2), 2));
+
+	return dist;
+}
+
+double polynomial(double x, double coef[], int n)
+{
+	double y;
+	int j;
+	
+	for (j = 0, y = 0; j <= n; ++j)
+	{
+		y += coef[j] * pow(x, j);
+	}
+
+	return y;
+}
+
+
+int CoprimePairs(int number[], int length)
+{
+
+	
+	int i, j, Remainder;
+	int count = 0;
+	
+	for (i = 0; i < length; ++i)
+	{
+		for (j = i; j < length; ++j)
+		{
+			/* Determine the g.c.d. of 2 integers */
+			if (1 == gcd(number[i], number[j]))
+			{
+				++count;
+			}
+		}
+	}
+	
+}
+
+int gcd(int num1, int num2)
+{
+	int Remainder;
+	while (num1 % num2 != 0)
+	{
+		Remainder = num1 % num2;
+		num1 = num2;
+		num2 = Remainder;
+	}
+	return num2;
+}
