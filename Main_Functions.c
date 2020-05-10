@@ -1,16 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 
 #define N 5
-#define M 10
-#define maxDim 256
 
-/* function prototypes */
 int* first_positive(int* iptr);
-int Max(int* iptr[], int n);
-int add_n(int* iptr, int k);
-void upper_solver(double* A, double* x, double* y, int n);
 
 int main(void)
 {
@@ -91,73 +86,6 @@ int main(void)
 	iptr = first_positive(&Arr[8]);
 	printf("*iptr = %d, iptr = %p \n", *iptr, iptr);
 	printf("iptr - Arr = %d \n", iptr - Arr);
-
-	/* Ex 9.1: Create fucntion 'max' that returnss the max integer among these integers. */
-	
-	int array[M];
-	int* iPtr[M]; // array of pointers
-	for (i = 0; i < M; i++)
-	{
-		printf("array[%d] = ", i);
-		scanf_s("%d", &array[i]);
-		iPtr[i] = &array[i]; // each pointer points to the corresponding element in the array
-	}
-	printf("max(iPtr, M) = %d\n\n", Max(iPtr, M) );
-
-	/*Ex 9.2: add a number n on a specified integer */
-	printf("Here comes Exercise 9.2! Add k on a given number n. \n");
-	int n, k;
-	printf("the number n: ");
-	scanf_s("%d", &n);
-	printf("the number k: ");
-	scanf_s("%d", &k);
-	
-	i = add_n(NULL, k);
-	printf("answer = %d \n", i);
-
-	i = add_n(&n, k);
-	printf("answer = %d \n\n", i);
-
-
-	/* Ex 9.3: Solving a system of linear equations Ax = y */
-
-	int j;
-	double A[maxDim * (maxDim - 1) / 2]; // 1D array to express the n by n square matrix
-	double* aptr = A;
-	double x[maxDim];
-	double y[maxDim];
-
-	printf("To solve a system of linear equation A x = y.\n");
-	printf("dimension of x: (do not exceed 256)");
-	scanf_s("%d", &n);
-
-	printf("Initialise A: \n");
-	for ( i = 0; i < n; i++ )
-	{
-		for (j = i; j < n; j++)
-		{
-			// A is upper triangular
-			printf("A[%d][%d] = ", i, j);
-			scanf_s("%lf", aptr);
-			aptr++;
-		}
-	}
-
-	printf("Initialise y: \n");
-	for ( i = 0; i < n; i++)
-	{
-		printf("y[%d] = ", i);
-		scnaf_s("%lf", &y[i]);
-	}
-
-	upper_solve(A, x, y, n);
-
-
-	// show the solution x
-	for (i = 0; i < n; i++)
-	{
-		printf("x[%d] = %lf \n", i, x[i]);
-	}
 
 
 
